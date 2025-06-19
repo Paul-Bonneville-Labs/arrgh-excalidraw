@@ -33,6 +33,17 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# GitHub tokens and credentials (security)
+.github-token
+.github-token.txt
+github-token*
+.gh-token*
+*.token
+credentials/
+scripts/*.token
+scripts/*-token*
+scripts/secrets/
+
 # Vercel
 .vercel
 
