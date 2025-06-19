@@ -16,6 +16,15 @@ npm start
 
 # Lint code
 npm run lint
+
+# Run tests
+npm run test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
 ```
 
 ## Architecture Overview
@@ -42,6 +51,10 @@ This is a **Next.js 15 application** that integrates **AI-powered diagram genera
 - `FASTAPI_URL`: Backend service URL (defaults to `http://localhost:8000`)
 - `FASTAPI_TOKEN`: Optional bearer token for backend authentication
 
+**Production Notes:**
+- Custom domain (https://excalidraw.paulbonneville.com) is handled via DNS configuration
+- No additional environment variables required for custom domain setup
+
 ### AI Generation Flow
 1. User enters prompt in modal dialog
 2. Frontend sends POST to `/api/generate`
@@ -52,7 +65,10 @@ This is a **Next.js 15 application** that integrates **AI-powered diagram genera
 ## Deployment Architecture
 - **Frontend**: Next.js app on Google Cloud Run
 - **Backend**: Existing arrgh-fastapi service with new diagram endpoint
-- Both services deployed independently, connected via `FASTAPI_URL`
+- **Production URL**: https://excalidraw.paulbonneville.com (custom domain)
+- **Deployment**: Both services deployed independently, connected via `FASTAPI_URL`
+- **Health Checks**: Deployment workflow tests both Cloud Run URL and custom domain
+- **DNS Configuration**: Custom domain configured via DNS records (not Cloud Run domain mapping)
 
 ## Technology Stack
 - Next.js 15 with React 19 and TypeScript
@@ -141,9 +157,9 @@ gh auth refresh -s repo -s project -s workflow -s read:org
 # For new token setup or renewal
 gh auth login --with-token
 
-# Check everything is working
+# Check everything is working (replace 'pbonneville' with your username)
 gh auth status && gh project list --owner pbonneville
 
-# Test project access
+# Test project access (replace 'pbonneville' with your username)
 gh project view 1 --owner pbonneville
 ```
