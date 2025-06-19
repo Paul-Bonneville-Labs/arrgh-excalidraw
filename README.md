@@ -24,7 +24,7 @@ npm install
 
 ### 2. FastAPI Integration
 
-Copy the code from `fastapi-endpoint-example.py` to your existing arrgh-fastapi service:
+Copy the code from `fastapi-endpoint-simplified.py` to your existing arrgh-fastapi service:
 
 1. Add the `DiagramRequest` model to your models
 2. Add the `/api/generate-excalidraw` endpoint to your FastAPI app
@@ -41,10 +41,13 @@ npm install
 npm run dev
 
 # Run tests
-npm test
+npm run test
 
 # Run tests in watch mode
 npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
 
 # Run linter
 npm run lint
@@ -69,7 +72,9 @@ This project uses **GitHub Actions** for automated testing and deployment:
 - Automatically triggers on push to `main`
 - Runs full test suite and build
 - Deploys to Google Cloud Run
-- Includes health check verification
+- **Health Check Verification**: Tests both Cloud Run URL and custom domain
+- **Custom Domain**: Verifies https://excalidraw.paulbonneville.com accessibility
+- Deployment succeeds only if both endpoints respond correctly
 
 #### Setup Requirements
 1. **Configure GitHub Secrets** (see `docs-ai/GITHUB-SECRETS-SETUP.md`):
