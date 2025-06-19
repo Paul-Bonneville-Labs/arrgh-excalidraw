@@ -138,6 +138,9 @@ For more stable, long-term access, consider using a Personal Access Token (PAT):
 # Emergency permission restore
 gh auth refresh -s repo -s project -s workflow -s read:org
 
+# For new token setup or renewal
+gh auth login --with-token
+
 # Check everything is working
 gh auth status && gh project list --owner pbonneville
 

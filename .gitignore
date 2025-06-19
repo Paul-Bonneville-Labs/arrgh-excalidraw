@@ -40,9 +40,6 @@ github-token*
 .gh-token*
 *.token
 credentials/
-scripts/*.token
-scripts/*-token*
-scripts/secrets/
 
 # Vercel
 .vercel

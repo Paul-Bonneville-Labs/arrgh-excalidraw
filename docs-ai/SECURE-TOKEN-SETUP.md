@@ -83,12 +83,9 @@ gcloud secrets add-iam-policy-binding github-token-claude-code \
 gcloud secrets versions access latest --secret="github-token-claude-code"
 ```
 
-### Using the Secret in Scripts
+### Using the Secret Manually
 
 ```bash
-#!/bin/bash
-# get-github-token.sh
-
 # Retrieve token from Google Secret Manager
 TOKEN=$(gcloud secrets versions access latest --secret="github-token-claude-code")
 
@@ -119,35 +116,27 @@ Add to your GitHub Actions workflow:
 
 ## Option 3: Hybrid Approach (Recommended)
 
-Combine local development with cloud storage:
+Combine local development with cloud storage for maximum flexibility:
 
+**Manual Hybrid Setup:**
 ```bash
-# Local development script
-#!/bin/bash
-# setup-github-auth.sh
-
+# Try Secret Manager first (if available)
 if command -v gcloud &> /dev/null && gcloud auth list --filter=status:ACTIVE --format="value(account)" &> /dev/null; then
-    echo "Using Google Secret Manager..."
     TOKEN=$(gcloud secrets versions access latest --secret="github-token-claude-code" 2>/dev/null)
     if [ $? -eq 0 ] && [ ! -z "$TOKEN" ]; then
         echo "$TOKEN" | gh auth login --with-token
         echo "✅ Authenticated via Secret Manager"
-        exit 0
     fi
-fi
-
-echo "Falling back to local token..."
-if [ -f ~/.config/gh/token ]; then
+# Fall back to local token
+elif [ -f ~/.config/gh/token ]; then
     gh auth login --with-token < ~/.config/gh/token
     echo "✅ Authenticated via local token"
+# Fall back to environment variable
 elif [ ! -z "$GITHUB_TOKEN" ]; then
     echo "$GITHUB_TOKEN" | gh auth login --with-token
     echo "✅ Authenticated via environment variable"
 else
-    echo "❌ No token found. Please run setup:"
-    echo "  1. Create PAT: https://github.com/settings/tokens"
-    echo "  2. Store securely using one of the methods in docs-ai/SECURE-TOKEN-SETUP.md"
-    exit 1
+    echo "❌ No token found. Run: gh auth login --with-token"
 fi
 ```
 
@@ -172,67 +161,40 @@ fi
 
 ## Token Rotation Process
 
-### Monthly Token Rotation (Recommended)
+### Manual Token Rotation (Recommended)
 
+**Monthly Token Rotation Process:**
+1. Create new PAT: https://github.com/settings/tokens
+2. Required scopes: repo, project, workflow, read:org
+3. Copy new token
+4. Update storage:
+   ```bash
+   # Update Secret Manager
+   gcloud secrets versions add github-token-claude-code --data-file=- <<< "new_token_here"
+   
+   # Update local storage
+   echo "new_token_here" > ~/.config/gh/token
+   chmod 600 ~/.config/gh/token
+   
+   # Re-authenticate
+   gh auth login --with-token  # Paste new token when prompted
+   
+   # Verify
+   gh auth status
+   ```
+5. Delete old token from GitHub settings
+
+## Manual Verification
+
+**Check Current Setup:**
 ```bash
-#!/bin/bash
-# rotate-github-token.sh
-
-echo "🔄 GitHub Token Rotation Process"
-echo "1. Create new PAT: https://github.com/settings/tokens"
-echo "2. Required scopes: repo, project, workflow, read:org"
-echo "3. Copy new token"
-read -s -p "Enter new token: " NEW_TOKEN
-echo
-
-# Update Secret Manager
-gcloud secrets versions add github-token-claude-code --data-file=- <<< "$NEW_TOKEN"
-
-# Update local storage
-echo "$NEW_TOKEN" > ~/.config/gh/token
-chmod 600 ~/.config/gh/token
-
-# Re-authenticate
-echo "$NEW_TOKEN" | gh auth login --with-token
-
-# Verify
+# Check authentication
 gh auth status
 
-echo "✅ Token rotation complete!"
-echo "🗑️  Remember to delete old token from GitHub settings"
-```
-
-## Verification Scripts
-
-### Check Current Setup
-
-```bash
-#!/bin/bash
-# verify-github-setup.sh
-
-echo "🔍 Verifying GitHub CLI setup..."
-
-# Check authentication
-if ! gh auth status > /dev/null 2>&1; then
-    echo "❌ Not authenticated"
-    exit 1
-fi
-
-echo "✅ Authenticated"
-
-# Check scopes
-echo "📋 Checking scopes..."
-gh auth status 2>&1 | grep -q "repo" && echo "  ✅ repo" || echo "  ❌ repo"
-gh auth status 2>&1 | grep -q "project" && echo "  ✅ project" || echo "  ❌ project"
-gh auth status 2>&1 | grep -q "workflow" && echo "  ✅ workflow" || echo "  ❌ workflow"
-
 # Test functionality
-echo "🧪 Testing functionality..."
-gh project list --owner pbonneville > /dev/null 2>&1 && echo "  ✅ Projects" || echo "  ❌ Projects"
-gh repo view pbonneville/arrgh-excalidraw > /dev/null 2>&1 && echo "  ✅ Repository" || echo "  ❌ Repository"
-gh run list --limit 1 > /dev/null 2>&1 && echo "  ✅ Workflows" || echo "  ❌ Workflows"
-
-echo "✅ Verification complete!"
+gh project list --owner pbonneville
+gh repo view pbonneville/arrgh-excalidraw
+gh run list --limit 3
 ```
 
 ## Emergency Recovery
