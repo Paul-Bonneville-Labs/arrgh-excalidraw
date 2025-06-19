@@ -32,24 +32,59 @@ Copy the code from `fastapi-endpoint-example.py` to your existing arrgh-fastapi 
 ### 3. Local Development
 
 ```bash
+# Install dependencies
+npm install
+
 # Start the Next.js development server
 npm run dev
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run linter
+npm run lint
+
+# Build for production
+npm run build
 ```
 
 Visit `http://localhost:3000` to see the application.
 
-### 4. Cloud Run Deployment
+### 4. Automated Deployment (CI/CD)
 
-#### Deploy FastAPI Service (if not already deployed)
-```bash
-# In your arrgh-fastapi directory
-gcloud run deploy arrgh-fastapi \
-  --source . \
-  --region us-central1 \
-  --allow-unauthenticated
-```
+This project uses **GitHub Actions** for automated testing and deployment:
 
-#### Deploy Next.js Application
+#### CI Pipeline (Pull Requests)
+- Runs on every pull request to `main`
+- Tests on Node.js 18.x and 20.x
+- Executes: lint → test → build
+- Required to pass before merging
+
+#### CD Pipeline (Production Deployment)
+- Automatically triggers on push to `main`
+- Runs full test suite and build
+- Deploys to Google Cloud Run
+- Includes health check verification
+
+#### Setup Requirements
+1. **Configure GitHub Secrets** (see `docs-ai/GITHUB-SECRETS-SETUP.md`):
+   - `GCP_SA_KEY`: Google Cloud service account credentials
+   - `FASTAPI_URL`: Your FastAPI backend URL
+
+2. **Deploy FastAPI Service** (if not already deployed):
+   ```bash
+   # In your arrgh-fastapi directory
+   gcloud run deploy arrgh-fastapi \
+     --source . \
+     --region us-central1 \
+     --allow-unauthenticated
+   ```
+
+#### Manual Deployment (if needed)
+
 ```bash
 # In the arrgh-excalidraw directory
 gcloud run deploy excalidraw-nextjs \
@@ -89,6 +124,8 @@ gcloud run deploy excalidraw-nextjs \
 - **UI Components**: shadcn/ui (built on Radix UI)
 - **Diagram Editor**: Excalidraw
 - **Icons**: Lucide React
+- **Testing**: Jest, React Testing Library
+- **CI/CD**: GitHub Actions
 - **Backend**: FastAPI (your existing service)
 - **Deployment**: Google Cloud Run
 
@@ -105,6 +142,17 @@ gcloud run deploy excalidraw-nextjs \
 - All diagram data is processed client-side after generation
 - The API route acts as a proxy to your FastAPI service
 - Environment variables are used for configuration
+- Tests mock Excalidraw and fetch API for reliable testing
+- Branch protection requires PR reviews and passing CI checks
+
+## Contributing
+
+1. **Create a feature branch** from `main`
+2. **Make your changes** with appropriate tests
+3. **Run tests locally**: `npm test` and `npm run lint`
+4. **Create a pull request** - CI will automatically run tests
+5. **Get approval** from a reviewer with write access
+6. **Merge to main** - CD will automatically deploy to production
 
 ## Next Steps
 
