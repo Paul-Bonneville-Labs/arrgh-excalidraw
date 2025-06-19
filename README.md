@@ -2,6 +2,8 @@
 
 A Next.js application that uses AI to generate diagrams and renders them in Excalidraw for editing.
 
+**🔗 Live App:** https://excalidraw.paulbonneville.com
+
 ## Architecture
 
 - **Next.js Frontend**: React app with shadcn/ui components and Excalidraw integration
