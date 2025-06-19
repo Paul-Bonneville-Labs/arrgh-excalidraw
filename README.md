@@ -84,6 +84,7 @@ This project uses **GitHub Actions** for automated testing and deployment:
    ```
 
 #### Manual Deployment (if needed)
+
 ```bash
 # In the arrgh-excalidraw directory
 gcloud run deploy excalidraw-nextjs \
