@@ -147,12 +147,26 @@ gcloud run deploy excalidraw-nextjs \
 
 ## Contributing
 
+### Prerequisites
+- Node.js 18+ and npm
+- GitHub CLI with proper permissions (see [GitHub CLI Setup Guide](docs-ai/GITHUB-CLI-SETUP.md))
+
+### Required GitHub CLI Scopes
+For full project management capabilities, ensure you have these scopes:
+```bash
+gh auth refresh -s repo -s project -s workflow -s read:org
+```
+
+### Workflow
 1. **Create a feature branch** from `main`
 2. **Make your changes** with appropriate tests
 3. **Run tests locally**: `npm test` and `npm run lint`
 4. **Create a pull request** - CI will automatically run tests
 5. **Get approval** from a reviewer with write access
 6. **Merge to main** - CD will automatically deploy to production
+
+### GitHub Projects Integration
+This repository is integrated with the "Arrgh! Aggregated Research Repository" project for issue tracking and project management.
 
 ## Next Steps
 

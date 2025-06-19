@@ -59,3 +59,88 @@ This is a **Next.js 15 application** that integrates **AI-powered diagram genera
 - Excalidraw for diagram editing
 - shadcn/ui + Tailwind CSS for UI
 - Lucide React for icons
+
+## GitHub CLI Permissions
+
+This project requires specific GitHub CLI permissions for Claude Code to manage issues, projects, and CI/CD workflows.
+
+### Required Scopes
+```bash
+# Essential scopes for full project management
+repo                    # Full repository access (read/write code, issues, PRs)
+project                 # GitHub Projects v2 access (create/edit project items)
+workflow                # GitHub Actions access (view/trigger workflows)
+read:org                # Organization access (for org-level projects)
+```
+
+### Quick Permission Restoration
+If Claude Code loses permissions, run these commands to restore access:
+
+```bash
+# Standard refresh with all required scopes
+gh auth refresh -s repo -s project -s workflow -s read:org
+
+# Alternative: Interactive refresh (will prompt for scopes)
+gh auth refresh
+
+# Verify current permissions
+gh auth status
+```
+
+### Troubleshooting GitHub CLI Issues
+
+**Permission Denied Errors:**
+```bash
+# Check current scopes
+gh auth status
+
+# Refresh with missing scopes
+gh auth refresh -s [missing-scope]
+```
+
+**Project Access Issues:**
+```bash
+# Verify project exists and is accessible
+gh project list --owner [username]
+
+# View project details
+gh project view [number] --owner [username]
+```
+
+**Common Commands for Project Management:**
+```bash
+# Create issue and add to project
+gh issue create --title "Issue Title" --body "Description" --project "Project Name"
+
+# Add existing issue to project
+gh project item-add [project-number] --owner [username] --url [issue-url]
+
+# List project items
+gh project item-list [project-number] --owner [username]
+```
+
+### Personal Access Token Alternative
+
+For more stable, long-term access, consider using a Personal Access Token (PAT):
+
+1. **Create PAT**: GitHub Settings → Developer settings → Personal access tokens
+2. **Required Scopes**: `repo`, `project`, `workflow`, `read:org`
+3. **Configure CLI**: `gh auth login --with-token < token.txt`
+4. **Expiration**: Set to 90 days or 1 year for stability
+
+**PAT Management:**
+- Store token securely
+- Set calendar reminder before expiration
+- Keep backup refresh commands available
+
+### Quick Reference
+```bash
+# Emergency permission restore
+gh auth refresh -s repo -s project -s workflow -s read:org
+
+# Check everything is working
+gh auth status && gh project list --owner pbonneville
+
+# Test project access
+gh project view 1 --owner pbonneville
+```
