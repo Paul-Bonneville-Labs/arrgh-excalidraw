@@ -162,3 +162,4 @@ gcloud run deploy excalidraw-nextjs \
 4. Add more diagram templates
 5. Enhance the AI prompts for better diagram generation
 6. Add deployment monitoring and alerting
+7. Implement user feedback collection
