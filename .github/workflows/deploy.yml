@@ -58,12 +58,18 @@ jobs:
     - name: Get service URL
       run: |
         SERVICE_URL=$(gcloud run services describe excalidraw-nextjs --region=us-central1 --format='value(status.url)')
-        echo "Deployed to: $SERVICE_URL"
+        CUSTOM_DOMAIN="https://excalidraw.paulbonneville.com"
+        echo "Deployed to Cloud Run: $SERVICE_URL"
+        echo "Custom domain: $CUSTOM_DOMAIN"
         echo "SERVICE_URL=$SERVICE_URL" >> $GITHUB_ENV
+        echo "CUSTOM_DOMAIN=$CUSTOM_DOMAIN" >> $GITHUB_ENV
 
     - name: Test deployment
       run: |
         # Wait a moment for deployment to be ready
         sleep 10
-        # Basic health check
+        # Test Cloud Run service directly
         curl -f "$SERVICE_URL" || exit 1
+        # Test custom domain
+        curl -f "$CUSTOM_DOMAIN" || exit 1
+        echo "✅ Both Cloud Run service and custom domain are responding"
