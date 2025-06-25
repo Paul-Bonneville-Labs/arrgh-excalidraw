@@ -1,0 +1,38 @@
+name: PR Validation
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  validate-pr:
+    name: Validate PR Standards
+    uses: pbonneville/arrgh-hub/.github/workflows/reusable-pr-validation.yml@main
+    with:
+      # Size configuration for frontend project
+      small_max_lines: 500
+      small_max_files: 12
+      medium_max_lines: 1000
+      medium_max_files: 20
+      large_max_lines: 2000
+      large_max_files: 30
+      
+      # Feature toggles
+      enable_size_validation: true
+      enable_auto_labeling: true
+      enable_description_validation: true
+      enable_security_scanning: true
+      enable_metrics_reporting: true
+      
+      # Repository-specific configuration
+      config_file_path: '.github/pr-automation-config.yml'
+      standards_path: 'https://github.com/pbonneville/arrgh-hub/blob/main/Anthropic/Claude/Global/PR-STANDARDS.md'
+      
+      # Conventional commits configuration
+      allowed_types: 'feat,fix,docs,style,refactor,test,build,chore,perf,ci'
+      require_scope: false
