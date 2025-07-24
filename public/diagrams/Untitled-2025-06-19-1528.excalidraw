@@ -1,0 +1,85 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.paulbonneville.com",
+  "elements": [
+    {
+      "id": "-HJmpvGeFY81s0v9SPJea",
+      "type": "ellipse",
+      "x": 702.3553237785561,
+      "y": 174.71232461313429,
+      "width": 306.234375,
+      "height": 306.234375,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "Rpatp6itg9tqvmavyb-iV"
+      ],
+      "frameId": null,
+      "index": "a2",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1091819024,
+      "version": 224,
+      "versionNonce": 399088656,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1750368664906,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "va5Xeb_Lu-zYhDx7ioZCc",
+      "type": "text",
+      "x": 823.4952015888698,
+      "y": 485.89752985231803,
+      "width": 62.23994445800781,
+      "height": 27,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "Rpatp6itg9tqvmavyb-iV"
+      ],
+      "frameId": null,
+      "index": "a3",
+      "roundness": null,
+      "seed": 984180976,
+      "version": 211,
+      "versionNonce": 2035810320,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1750368679094,
+      "link": null,
+      "locked": false,
+      "text": "iPhone",
+      "fontSize": 20,
+      "fontFamily": 6,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "iPhone",
+      "autoResize": true,
+      "lineHeight": 1.35
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
